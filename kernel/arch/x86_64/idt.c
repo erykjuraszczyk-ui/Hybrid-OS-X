@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 #include "../../drivers/serial/serial.h"
-#include "../cpu.h"
+#include "cpu.h"
 #include "../../core/panic.h"
 
 #define HYBRID_IDT_ENTRIES 256U
