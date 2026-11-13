@@ -51,7 +51,7 @@ $(EFI_APP): $(EFI_SO)
 	$(OBJCOPY) \
 		-j .text -j .sdata -j .data -j .rodata -j .dynamic \
 		-j .dynsym -j .rel -j .rela -j .reloc \
-		--target=efi-app-x86_64 $< $@
+		--output-target=efi-app-x86_64 $< $@
 
 $(BUILD_DIR):
 	@mkdir -p $@
