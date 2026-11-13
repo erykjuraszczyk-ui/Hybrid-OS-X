@@ -13,6 +13,8 @@ _Noreturn void kernel_main(const hybrid_boot_info_t *boot_info)
 
     hybrid_cpu_disable_interrupts();
     hybrid_serial_initialize();
+    hybrid_idt_initialize();
+    hybrid_serial_write("[CPU] IDT exception gates 0-31 installed.\\n");
     hybrid_serial_write("\n========================================\n");
     hybrid_serial_write(" HYBRID OS X  |  native kernel bootstrap\n");
     hybrid_serial_write(" Version: " HYBRID_VERSION "\n");
