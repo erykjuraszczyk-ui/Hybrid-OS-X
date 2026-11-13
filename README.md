@@ -1,8 +1,8 @@
 # HYBRID OS X
 
-HYBRID OS X is an experimental native operating-system project for x86-64 PCs. The first milestone establishes a UEFI boot path, a freestanding C17 kernel entry point, serial diagnostics, a GOP framebuffer boot display, and a first read-only view of the UEFI memory map.
+HYBRID OS X is an experimental native operating-system project for x86-64 PCs. The project establishes a UEFI boot path, a freestanding C17 kernel entry point, serial diagnostics, a GOP framebuffer boot display, a read-only UEFI memory-map view, and initial x86-64 IDT exception gates (vectors 0-31).
 
-**Status: 0.1.0 bootstrap / engineering preview.** This is not yet a general-purpose operating system. Process isolation, scheduling, virtual memory, filesystems, networking, userspace, and a complete driver model are not implemented.
+**Status: 0.2.0 kernel-core preview (incremental).** This is not yet a general-purpose operating system. Process isolation, scheduling, virtual memory, filesystems, networking, userspace, and a complete driver model are not implemented.
 
 ## Technical baseline
 
@@ -43,7 +43,7 @@ If OVMF is installed elsewhere, use:
 
 - boot/uefi/ — UEFI entry point and ExitBootServices handoff.
 - include/hybrid/ — versioned boot contract.
-- kernel/arch/x86_64/ — CPU primitives.
+- kernel/arch/x86_64/ — CPU primitives, IDT and exception entry stubs.
 - kernel/console/ — GOP boot display.
 - kernel/core/ — kernel entry and panic handling.
 - kernel/drivers/serial/ — COM1 diagnostics.
@@ -62,6 +62,6 @@ If OVMF is installed elsewhere, use:
 
 ## Current limitations
 
-The first milestone remains in UEFI-provided long mode and uses the firmware's initial address-space setup. It disables maskable interrupts before kernel initialization and halts on completion. It does not yet install an IDT/GDT, reconfigure paging, initialize APs, reclaim boot-services memory, or provide a general-purpose allocator. GOP output supports the two common 32-bit RGB/BGR pixel formats; serial output is the reliable QEMU diagnostic path.
+The first milestone remains in UEFI-provided long mode and uses the firmware's initial address-space setup. It disables maskable interrupts before kernel initialization and halts on completion. It installs an initial IDT for CPU exception vectors 0-31, but does not yet install a kernel-owned GDT, reconfigure paging, initialize APs, reclaim boot-services memory, or provide a general-purpose allocator. GOP output supports the two common 32-bit RGB/BGR pixel formats; serial output is the reliable QEMU diagnostic path.
 
 See docs/ARCHITECTURE.md and docs/ROADMAP.md for the current contract and staged plan.
