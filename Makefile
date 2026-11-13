@@ -31,7 +31,7 @@ SOURCES := \
     kernel/drivers/serial/serial.c \
     kernel/mm/memory.c \
     kernel/console/framebuffer.c
-OBJECTS := $(patsubst %.c,$(BUILD_DIR)/obj/%.o,$(SOURCES))
+ASM_SOURCES := kernel/arch/x86_64/interrupts.S\nOBJECTS := $(patsubst %.c,$(BUILD_DIR)/obj/%.o,$(SOURCES)) $(patsubst %.S,$(BUILD_DIR)/obj/%.o,$(ASM_SOURCES))
 
 .PHONY: all clean check test run help
 
