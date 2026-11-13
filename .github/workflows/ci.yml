@@ -1,0 +1,30 @@
+name: HYBRID OS X CI
+
+on:
+  push:
+    branches: [main, "feat/**"]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-uefi:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential gcc binutils make gnu-efi file
+      - name: Build EFI application and tests
+        run: make clean test check
+      - name: Upload EFI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hybrid-os-x-uefi-x86_64
+          path: build/esp/EFI/BOOT/BOOTX64.EFI
+          if-no-files-found: error

@@ -1,0 +1,13 @@
+/build/
+*.o
+*.so
+*.EFI
+*.img
+*.iso
+*.log
+*.map
+*.sym
+*.elf
+*.bin
+*.fd
+*.qcow2
