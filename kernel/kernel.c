@@ -1,11 +1,12 @@
 #include "hybrid/boot_info.h"
 #include "arch/x86_64/cpu.h"
+#include "arch/x86_64/idt.h"
 #include "console/framebuffer.h"
 #include "core/panic.h"
 #include "drivers/serial/serial.h"
 #include "mm/memory.h"
 
-#define HYBRID_VERSION "0.1.0"
+#define HYBRID_VERSION "0.2.0"
 
 _Noreturn void kernel_main(const hybrid_boot_info_t *boot_info)
 {
@@ -13,6 +14,8 @@ _Noreturn void kernel_main(const hybrid_boot_info_t *boot_info)
 
     hybrid_cpu_disable_interrupts();
     hybrid_serial_initialize();
+    hybrid_idt_initialize();
+    hybrid_serial_write("[CPU] IDT exception gates 0-31 installed.\n");
     hybrid_serial_write("\n========================================\n");
     hybrid_serial_write(" HYBRID OS X  |  native kernel bootstrap\n");
     hybrid_serial_write(" Version: " HYBRID_VERSION "\n");

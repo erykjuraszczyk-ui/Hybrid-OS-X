@@ -24,11 +24,11 @@ For milestone 0.1.0, boot and kernel code are part of one EFI image. The kernel 
 | Subsystem | Responsibility | State |
 |---|---|---|
 | UEFI boot | Firmware discovery, memory map and handoff | Initial implementation |
-| x86-64 CPU | Interrupt disable and halt primitive | Initial implementation |
+| x86-64 CPU | Interrupt disable, halt and initial IDT exception gates (0-31) | Initial implementation |
 | Serial driver | COM1 diagnostics | Initial implementation |
 | GOP console | Basic 32-bit RGB/BGR boot-screen drawing | Initial implementation |
 | Memory | Read-only UEFI descriptor summary | Initial implementation |
-| Interrupts | IDT, exception and IRQ dispatch | Planned |
+| Interrupts | Initial IDT exception gates 0-31; IRQ routing and full exception policy | Partial / planned |
 | Memory manager | Physical allocator, paging and virtual memory | Planned |
 | Scheduler | Threads and scheduling policy | Planned |
 | IPC | Kernel messaging and synchronization | Planned |
