@@ -47,10 +47,6 @@ $(BUILD_DIR)/obj/%.o: %.S
 	@mkdir -p $(dir $@)
 	$(CC) $(CPPFLAGS) -ffreestanding -fpic -mno-red-zone -c $< -o $@
 
-$(BUILD_DIR)/obj/%.o: %.S
-	@mkdir -p $(dir $@)
-	$(CC) $(CPPFLAGS) -ffreestanding -fpic -mno-red-zone -c $< -o $@
-
 $(EFI_SO): $(OBJECTS) | $(BUILD_DIR)
 	@test -f "$(EFI_CRT)" || (echo "GNU-EFI crt object not found: $(EFI_CRT)"; exit 1)
 	@test -f "$(EFI_LDS)" || (echo "GNU-EFI linker script not found: $(EFI_LDS)"; exit 1)
