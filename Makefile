@@ -9,6 +9,7 @@ CC ?= gcc
 LD ?= ld
 OBJCOPY ?= objcopy
 OVMF_CODE ?= $(firstword $(wildcard /usr/share/OVMF/OVMF_CODE.fd /usr/share/ovmf/OVMF_CODE.fd /usr/share/edk2/x64/OVMF_CODE.fd))
+OVMF_VARS ?= $(firstword $(wildcard /usr/share/OVMF/OVMF_VARS.fd /usr/share/ovmf/OVMF_VARS.fd /usr/share/edk2/x64/OVMF_VARS.fd))
 
 EFI_LIBDIR ?= $(if $(wildcard /usr/lib/gnuefi),/usr/lib/gnuefi,/usr/lib)
 EFI_INCLUDEDIR ?= /usr/include/efi
@@ -70,9 +71,12 @@ $(HOST_TEST): tests/test_memory.c kernel/mm/memory.c include/hybrid/boot_info.h 
 
 run: check
 	@test -n "$(OVMF_CODE)" || (echo "OVMF_CODE not found. Install ovmf or set OVMF_CODE=/path/to/OVMF_CODE.fd"; exit 1)
+	@test -n "$(OVMF_VARS)" || (echo "OVMF_VARS not found. Install ovmf or set OVMF_VARS=/path/to/OVMF_VARS.fd"; exit 1)
+	@test -f "$(BUILD_DIR)/OVMF_VARS.fd" || cp "$(OVMF_VARS)" "$(BUILD_DIR)/OVMF_VARS.fd"
 	qemu-system-x86_64 \
 		-machine q35 -m 512M \
 		-drive if=pflash,format=raw,readonly=on,file="$(OVMF_CODE)" \
+		-drive if=pflash,format=raw,file="$(BUILD_DIR)/OVMF_VARS.fd" \
 		-drive format=raw,file=fat:rw:"$(ESP_DIR)" \
 		-serial stdio -monitor none -no-reboot
 
@@ -81,4 +85,4 @@ clean:
 
 help:
 	@echo "Targets: all (default), check, test, run, clean"
-	@echo "Variables: EFI_LIBDIR, EFI_INCLUDEDIR, EFI_CRT, EFI_LDS, OVMF_CODE"
+	@echo "Variables: EFI_LIBDIR, EFI_INCLUDEDIR, EFI_CRT, EFI_LDS, OVMF_CODE, OVMF_VARS"

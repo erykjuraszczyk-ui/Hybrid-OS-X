@@ -29,7 +29,7 @@ The EFI application is produced at build/esp/EFI/BOOT/BOOTX64.EFI. QEMU sends ke
 
 If OVMF is installed elsewhere, use:
 
-    make run OVMF_CODE=/path/to/OVMF_CODE.fd
+    make run OVMF_CODE=/path/to/OVMF_CODE.fd OVMF_VARS=/path/to/OVMF_VARS.fd
 
 ## Targets
 
