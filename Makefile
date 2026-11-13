@@ -11,7 +11,7 @@ OBJCOPY ?= objcopy
 OVMF_CODE ?= $(firstword $(wildcard /usr/share/OVMF/OVMF_CODE.fd /usr/share/ovmf/OVMF_CODE.fd /usr/share/edk2/x64/OVMF_CODE.fd))
 OVMF_VARS ?= $(firstword $(wildcard /usr/share/OVMF/OVMF_VARS.fd /usr/share/ovmf/OVMF_VARS.fd /usr/share/edk2/x64/OVMF_VARS.fd))
 
-EFI_LIBDIR ?= $(if $(wildcard /usr/lib/gnuefi),/usr/lib/gnuefi,/usr/lib)
+EFI_LIBDIR ?= $(if $(wildcard /usr/lib/crt0-efi-x86_64.o),/usr/lib,$(if $(wildcard /usr/lib64/crt0-efi-x86_64.o),/usr/lib64,$(if $(wildcard /usr/lib/gnuefi/crt0-efi-x86_64.o),/usr/lib/gnuefi,/usr/lib)))
 EFI_INCLUDEDIR ?= /usr/include/efi
 EFI_CRT ?= $(EFI_LIBDIR)/crt0-efi-x86_64.o
 EFI_LDS ?= $(EFI_LIBDIR)/elf_x86_64_efi.lds
@@ -58,7 +58,7 @@ $(BUILD_DIR):
 
 check: all
 	@test -s "$(EFI_APP)"
-	@file "$(EFI_APP)" | grep -Eqi 'PE32\+.*EFI application|PE32\+ executable'
+	@file "$(EFI_APP)" | grep -Eqi 'PE32[+].*EFI application|PE32[+] executable'
 	@echo "HYBRID OS X EFI application verified: $(EFI_APP)"
 
 test: $(HOST_TEST)
