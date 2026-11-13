@@ -27,6 +27,7 @@ SOURCES := \
     boot/uefi/entry.c \
     kernel/kernel.c \
     kernel/arch/x86_64/cpu.c \
+    kernel/arch/x86_64/idt.c \
     kernel/core/panic.c \
     kernel/drivers/serial/serial.c \
     kernel/mm/memory.c \
@@ -40,6 +41,10 @@ all: $(EFI_APP)
 $(BUILD_DIR)/obj/%.o: %.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/obj/%.o: %.S
+	@mkdir -p $(dir $@)
+	$(CC) $(CPPFLAGS) -ffreestanding -fpic -mno-red-zone -c $< -o $@
 
 $(EFI_SO): $(OBJECTS) | $(BUILD_DIR)
 	@test -f "$(EFI_CRT)" || (echo "GNU-EFI crt object not found: $(EFI_CRT)"; exit 1)
